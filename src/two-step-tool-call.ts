@@ -1,6 +1,7 @@
 import OpenAI from "openai";
 import {ChatCompletionTool} from "openai/src/resources/chat/completions";
 import {tools} from "./schema-examples";
+
 const AJV = require("ajv");
 
 const ajv = new AJV({strict: false});
@@ -31,16 +32,14 @@ function generateToolDescriptorTool(tools: Array<ChatCompletionTool>): ChatCompl
             },
         },
     }
-
-
 }
 
 export async function createTwoStepToolCall(openai: OpenAI, chatOptions: OpenAI.Chat.Completions.ChatCompletionCreateParamsNonStreaming, availableFunctions: object, options: {
     addTools: string[],
-    maxCalls: number,
+    maxCalls: number, // the recursive function call max count, I added this for safety.
     callNr: number,
     validateArgs: boolean
-} = {addTools: [], validateArgs: true, maxCalls: 6, callNr: 1}) {
+} = {addTools: [], validateArgs: true, maxCalls: 10, callNr: 1}) {
     const descriptorToolSchema = generateToolDescriptorTool(chatOptions.tools);
     const enabledTools = chatOptions.tools.filter((t) => options.addTools.includes(t.function.name)) || []
     const finalTools = [...enabledTools, descriptorToolSchema]
@@ -98,7 +97,9 @@ export async function createTwoStepToolCall(openai: OpenAI, chatOptions: OpenAI.
 
         formatMessages(messages)
         options.callNr += 1;
-        await createTwoStepToolCall(openai, {...chatOptions, messages}, availableFunctions, options);
+        return await createTwoStepToolCall(openai, {...chatOptions, messages}, availableFunctions, options);
+    } else {
+        return responseMessage;
     }
 }
 

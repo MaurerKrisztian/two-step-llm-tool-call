@@ -1,4 +1,4 @@
-import {createTwoStepToolCall} from "./index";
+import {createTwoStepToolCall} from "./two-step-tool-call";
 import {availableFunctions, tools} from "./schema-examples";
 require('dotenv').config();
 
@@ -24,7 +24,7 @@ const openai = new OpenAI({apiKey: process.env.apikey});
 async function main() {
 
     while (true) {
-        await createTwoStepToolCall(openai, {
+      const result =  await createTwoStepToolCall(openai, {
             model: "gpt-3.5-turbo-0125",
             messages: [
                 {
@@ -37,6 +37,8 @@ async function main() {
             tools: tools,
             tool_choice: "auto",
         }, availableFunctions)
+
+        console.log(`AI response: ${result?.content}`)
     }
 }
 
