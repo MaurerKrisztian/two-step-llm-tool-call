@@ -1,0 +1,23 @@
+{
+  "name": "twosteptoolcall",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx ts-node ./src/example.ts",
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.11.25",
+    "typescript": "^5.4.2"
+  },
+  "dependencies": {
+    "ajv": "^8.12.0",
+    "dotenv": "^16.4.5",
+    "openai": "^4.28.4"
+  }
+}
