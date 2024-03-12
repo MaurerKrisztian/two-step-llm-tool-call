@@ -11,6 +11,8 @@ From another point of view, this method also makes the AI work faster and better
 
 Note: This code is just a demonstration currently
 
+Read more: https://dev.to/maurerkrisztian/make-the-openai-function-calling-work-better-and-cheaper-with-a-two-step-function-call-1p96
+
 
 ## Setup:
 Set your OpenAI API key in the .env file as "apikey".
